@@ -1,5 +1,11 @@
 import streamlit as st
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_URL = os.getenv("API_URL")
 
 st.title("Single Review Prediction")
 
@@ -8,11 +14,8 @@ review = st.text_area("Enter Review")
 if st.button("Predict"):
 
     response = requests.post(
-
-        "http://127.0.0.1:8000/predict",
-
-        json={"review": review}
-
+    f"{API_URL}/predict",
+    json={"review": review}
     )
 
     if response.status_code == 200:

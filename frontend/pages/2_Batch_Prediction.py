@@ -2,6 +2,12 @@ import streamlit as st
 import requests
 import pandas as pd
 from io import BytesIO
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_URL = os.getenv("API_URL")
 st.title("📂 Batch Prediction")
 
 uploaded_file = st.file_uploader(
@@ -30,9 +36,8 @@ if uploaded_file is not None:
         }
 
         response = requests.post(
-            "http://127.0.0.1:8000/predict-batch",
-            files=files
-        )
+            f"{API_URL}/predict-batch",
+            files=files)
 
         if response.status_code == 200:
 
