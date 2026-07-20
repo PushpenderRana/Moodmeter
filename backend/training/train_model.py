@@ -11,16 +11,11 @@ from sklearn.preprocessing import LabelEncoder
 encoder = LabelEncoder()
 
 
-
-# ==========================================
 # Load Dataset
-# ==========================================
 
 df = pd.read_csv("preprocessed_reviews.csv")
 
-# ==========================================
 # Create Sentiment Labels
-# ==========================================
 
 import re
 
@@ -40,9 +35,8 @@ def rating_to_sentiment(rating):
     else:
         return "Positive"
 
-# ==========================================
 # Features and Target
-# ==========================================
+
 df["Sentiment"] = df["Rating"].apply(rating_to_sentiment)
 
 df = df.dropna(subset=["Sentiment"])
@@ -50,9 +44,7 @@ df = df.dropna(subset=["Sentiment"])
 X = df["Cleaned_Review"]
 y = encoder.fit_transform(df["Sentiment"])
 
-# ==========================================
 # TF-IDF Vectorization
-# ==========================================
 
 vectorizer = TfidfVectorizer(max_features=5000)
 
@@ -60,9 +52,7 @@ X = vectorizer.fit_transform(X)
 
 print("TF-IDF Shape:", X.shape)
 
-# ==========================================
 # Train-Test Split
-# ==========================================
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
@@ -72,23 +62,17 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-# ==========================================
 # Train Logistic Regression
-# ==========================================
 
 model = LogisticRegression(max_iter=1000)
 
 model.fit(X_train, y_train)
 
-# ==========================================
 # Prediction
-# ==========================================
 
 y_pred = model.predict(X_test)
 
-# ==========================================
 # Evaluation
-# ==========================================
 
 print("\nAccuracy:", accuracy_score(y_test, y_pred))
 
@@ -98,16 +82,8 @@ print(classification_report(y_test, y_pred))
 print("\nConfusion Matrix")
 print(confusion_matrix(y_test, y_pred))
 
-# ==========================================
+
 # Save Model
-# ==========================================
-
-
-print("\n✅ Model Saved Successfully")
-
-# ==========================================
-# Save Model
-# ==========================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_DIR = BASE_DIR / "models"
