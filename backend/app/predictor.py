@@ -25,10 +25,14 @@ print("Predictor loaded.")
 def predict_sentiment(review):
 
     cleaned = preprocess(review)
+    
 
     vector = vectorizer.transform([cleaned])
 
     prediction = model.predict(vector)
+    print("Prediction:", prediction)
+    print("Probabilities:", model.predict_proba(vector))
+    print("Classes:", encoder.classes_)
 
     sentiment = encoder.inverse_transform(prediction)[0]
 
